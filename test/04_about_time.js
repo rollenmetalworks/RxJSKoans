@@ -10,9 +10,15 @@ var __ = 'Fill in the blank';
 asyncTest('launching an event via a scheduler', function () {
   var received = '';
   var delay = 600; // Fix this value
-  Scheduler.timeout.scheduleWithRelative(delay, function () {
-    received = 'Finished';
-  });
+  var message = 'Finished';
+
+  Rx.Scheduler.default.scheduleFuture(
+    message,
+    delay,
+    function (scheduler, x) {
+      received = x;
+    }
+  );
 
   setTimeout(function () {
     start();
@@ -31,7 +37,7 @@ asyncTest('launching an event in the future', function () {
   setTimeout(function () {
     equal('Godot', received);
     start();
-  }, 500)
+  }, 500);
 });
 
 asyncTest('a watched pot', function () {
